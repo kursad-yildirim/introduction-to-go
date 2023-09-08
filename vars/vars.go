@@ -11,6 +11,7 @@ type deck struct {
 }
 
 func main() {
+	const faceCount = 4 //character, string, boolean, or numeric values
 	var i, j int
 	i = 1
 	j = 2
@@ -38,4 +39,29 @@ func main() {
 	fmt.Println(mydeck)
 	fmt.Printf("my deck is %v\n", mydeck)
 	fmt.Printf("my deck is %#v\n", mydeck)
+
+	if len(mydeck.faces) < faceCount {
+		fmt.Println("missing faces")
+	} else if len(mydeck.faces) > faceCount {
+		fmt.Println("Excessive faces")
+	} else {
+		fmt.Println("Correct faces")
+	}
+	/*
+		bool
+
+		string
+
+		int  int8  int16  int32  int64
+		uint uint8 uint16 uint32 uint64 uintptr
+
+		byte // alias for uint8
+
+		rune // alias for int32
+		     // represents a Unicode code point
+
+		float32 float64
+
+		complex64 complex128
+	*/
 }
