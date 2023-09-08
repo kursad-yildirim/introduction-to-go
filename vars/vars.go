@@ -26,8 +26,10 @@ func main() {
 	faces = append(faces, diamondface)
 	fmt.Println("Appended face", faces, len(faces), cap(faces))
 
-	blackfaces := faces[0:2]
+	blackfaces := faces[:2]
+	redfaces := faces[2:]
 	fmt.Println("Black faces", blackfaces, len(blackfaces), cap(blackfaces))
+	fmt.Println("Red faces", redfaces, len(redfaces), cap(redfaces))
 	var mydeck deck
 	for _, face := range faces {
 		mydeck.faces = append(mydeck.faces, face)
