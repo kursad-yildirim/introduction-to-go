@@ -1,1 +1,1 @@
-# introduction-to-go.
+# introduction-to-go
