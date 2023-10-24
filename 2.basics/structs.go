@@ -2,31 +2,45 @@ package main
 
 import "fmt"
 
-type cardface string
+type cardFace string
+type cardValue string
+type faceArray []cardValue
+
+type singleFace struct {
+	faceName  cardFace
+	faceCards faceArray
+}
 
 type deck struct {
-	faces []cardface
+	games
+	faces []singleFace
+}
+
+type games struct {
+	gameSlice []string
 }
 
 func main() {
-	const faceCount = 4
+	faceSlice := []cardFace{"diamonds", "hearts", "clubs", "spades"}
+	cardSlice := []cardValue{"one", "two", "three", "queen", "king"}
 
-	faces := []cardface{"spades", "clubs", "hearts", "diamonds"}
-
-	var mydeck deck
-	for i, face := range faces {
-		mydeck.faces = append(mydeck.faces, face)
-		fmt.Println(i, ": ", face, " is added to  the deck as a new face")
+	currentFace := singleFace{}
+	myDeck := deck{
+		games: games{
+			gameSlice: []string{"blackjack", "poker"},
+		},
+		faces: []singleFace{},
 	}
-	fmt.Println(mydeck)
-	fmt.Printf("my deck is %v\n", mydeck)
-	fmt.Printf("my deck is %#v\n", mydeck)
-
-	if len(mydeck.faces) < faceCount {
-		fmt.Println("missing faces")
-	} else if len(mydeck.faces) > faceCount {
-		fmt.Println("Excessive faces")
-	} else {
-		fmt.Println("Correct faces")
+	for _, face := range faceSlice {
+		currentFace.faceName = face
+		for _, card := range cardSlice {
+			currentFace.faceCards = append(currentFace.faceCards, card)
+		}
+		myDeck.faces = append(myDeck.faces, currentFace)
+		currentFace.faceCards = nil
 	}
+
+	fmt.Printf("%v\n", myDeck)
+	fmt.Println(myDeck.games.gameSlice)
+	fmt.Println(myDeck.games.gameSlice)
 }
