@@ -6,10 +6,6 @@ var x, y int = 4, 5
 
 type cardface string
 
-type deck struct {
-	faces []cardface
-}
-
 func main() {
 	const faceCount = 4 //character, string, boolean, or numeric values
 	var i, j int
@@ -31,22 +27,57 @@ func main() {
 	redfaces := faces[2:]
 	fmt.Println("Black faces", blackfaces, len(blackfaces), cap(blackfaces))
 	fmt.Println("Red faces", redfaces, len(redfaces), cap(redfaces))
-	var mydeck deck
-	for _, face := range faces {
-		mydeck.faces = append(mydeck.faces, face)
-		fmt.Println(face, " is added to  the deck as a new face")
-	}
-	fmt.Println(mydeck)
-	fmt.Printf("my deck is %v\n", mydeck)
-	fmt.Printf("my deck is %#v\n", mydeck)
 
-	if len(mydeck.faces) < faceCount {
-		fmt.Println("missing faces")
-	} else if len(mydeck.faces) > faceCount {
-		fmt.Println("Excessive faces")
-	} else {
-		fmt.Println("Correct faces")
+	names := [4]string{
+		"Ugo",
+		"Ignacio",
+		"Danielle",
+		"Francesco",
 	}
+	fmt.Println(names)
+
+	a := names[0:2]
+	b := names[1:3]
+	fmt.Println(a, b)
+
+	b[0] = "XXX"
+	fmt.Println(a, b)
+	fmt.Println(names)
+
+	primes := [6]int{2, 3, 5, 7, 11, 13}
+	fmt.Println(primes, len(primes), cap(primes))
+	slicePrimes := primes[:0]
+	slicePrint(slicePrimes)
+	slicePrimes = primes[:4]
+	slicePrint(slicePrimes)
+	slicePrimes = primes[1:5]
+	slicePrint(slicePrimes)
+	slicePrimes = primes[:5]
+	slicePrint(slicePrimes)
+	//	slicePrimes[5] = 13
+	slicePrimes = append(slicePrimes, 13)
+	slicePrint(slicePrimes)
+	// slicePrimes[1] = 99
+	slicePrimes = append(slicePrimes, 17)
+	slicePrint(slicePrimes)
+	slicePrimes = slicePrimes[:len(slicePrimes)+1]
+	//	slicePrimes[1] = 99
+	slicePrint(slicePrimes)
+	slicePrint(slicePrimes)
+	newPrimes := [7]int{2, 3, 5, 7, 11, 13, 17}
+	slicePrimes = newPrimes[:]
+	slicePrint(slicePrimes)
+	slicePrimes = primes[0:3]
+	newSlice := primes[2:5]
+	slicePrint(slicePrimes)
+	slicePrint(newSlice)
+	copy(slicePrimes, newSlice)
+	slicePrint(slicePrimes)
+	slicePrint(newSlice)
+	slicePrimes[2] = 98
+	slicePrint(slicePrimes)
+	slicePrint(newSlice)
+
 	/*
 		bool
 
@@ -64,4 +95,8 @@ func main() {
 
 		complex64 complex128
 	*/
+}
+
+func slicePrint(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 }
