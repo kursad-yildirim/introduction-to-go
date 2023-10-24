@@ -13,11 +13,19 @@ type singleFace struct {
 
 type deck struct {
 	games
-	faces []singleFace
+	faces      []singleFace
+	playerName string
+	player
 }
 
 type games struct {
-	gameSlice []string
+	gameSlice  []string
+	playerName string
+}
+
+type player struct {
+	playerName  string
+	playerLevel string
 }
 
 func main() {
@@ -27,9 +35,15 @@ func main() {
 	currentFace := singleFace{}
 	myDeck := deck{
 		games: games{
-			gameSlice: []string{"blackjack", "poker"},
+			gameSlice:  []string{"blackjack", "poker"},
+			playerName: "kyildiri",
 		},
-		faces: []singleFace{},
+		faces:      []singleFace{},
+		playerName: "kursad",
+		player: player{
+			playerName:  "yildirim",
+			playerLevel: "beginner",
+		},
 	}
 	for _, face := range faceSlice {
 		currentFace.faceName = face
@@ -41,6 +55,8 @@ func main() {
 	}
 
 	fmt.Printf("%v\n", myDeck)
+	fmt.Println(myDeck.gameSlice)
 	fmt.Println(myDeck.games.gameSlice)
-	fmt.Println(myDeck.games.gameSlice)
+	fmt.Println(myDeck.playerName)
+	fmt.Println(myDeck.games.playerName)
 }
