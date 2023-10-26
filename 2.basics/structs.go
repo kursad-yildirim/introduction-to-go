@@ -59,4 +59,33 @@ func main() {
 	fmt.Println(myDeck.games.gameSlice)
 	fmt.Println(myDeck.playerName)
 	fmt.Println(myDeck.games.playerName)
+
+	myDeck.addCard("five", 3)
+	myDeck.addCard("four", 3)
+	myDeck.addCard("ten", 5)
+	myDeck.addCard("jack", 6)
+	fmt.Println(myDeck.faces)
+}
+
+func (d *deck) addCard(v cardValue, i int) {
+	fmt.Println("ADD CARD", v, i)
+	for index, cards := range d.faces {
+		//fmt.Println(cards.faceCards)
+		cards.faceCards = insertCard(cards.faceCards, v, i)
+		//fmt.Println(cards.faceCards)
+		d.faces[index] = cards
+	}
+}
+
+func insertCard(f faceArray, c cardValue, ind int) faceArray {
+	var s faceArray
+	for i := 0; i < ind; i++ {
+		s = append(s, f[i])
+	}
+	s = append(s, c)
+	for i := ind; i < len(f); i++ {
+		s = append(s, f[i])
+	}
+
+	return s
 }
