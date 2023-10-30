@@ -41,5 +41,6 @@ func main() {
 func (example) Write(p []byte) (n int, err error) {
 	fmt.Println("custom writer interface")
 	fmt.Println(string(p))
+	//fmt.Printf("%s", p)
 	return len(p), nil
 }
