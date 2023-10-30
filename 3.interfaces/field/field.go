@@ -27,5 +27,5 @@ func (f field) String() string {
 		return "three"
 	}
 
-	return "not my number"
+	return fmt.Sprintf("%d", f)
 }
