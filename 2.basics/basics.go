@@ -7,7 +7,7 @@ var x, y int = 4, 5
 type cardface string
 
 func main() {
-	const faceCount = 4 //character, string, boolean, or numeric values
+	// const faceCount = 4 //character, string, boolean, or numeric values
 	var i, j int
 	i = 1
 	j = 2
