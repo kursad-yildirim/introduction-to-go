@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -15,34 +16,20 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error: %s", err)
 	}
-	//	defer file.Close()
-	defer func() {
-		file.Close()
-	}()
-	/*
-		var r io.Reader = file
+	defer file.Close()
 
-		if strings.HasSuffix(filename, ".gz") {
-			gr, err := gzip.NewReader(file)
-			if err != nil {
-				log.Fatalf("Error: %s", err)
-			}
-			defer gr.Close()
-			r = gr
+	var r io.Reader = file
+
+	if strings.HasSuffix(filename, ".gz") {
+		gr, err := gzip.NewReader(file)
+		if err != nil {
+			log.Fatalf("Error: %v", err)
 		}
-	*/
-
-	r, err := gzip.NewReader(file)
-	defer r.Close()
-
-	//	io.Copy(os.Stdout, gr)
-	sh := sha1.New()
-
-	if _, err := io.Copy(sh, r); err != nil {
-		log.Fatalf("Error: %s", err)
+		defer gr.Close()
+		r = gr
 	}
-
-	sha1sum := sh.Sum(nil)
-
-	fmt.Printf("%x", sha1sum)
+	sh := sha1.New()
+	io.Copy(sh, r)
+	shasum := sh.Sum(nil)
+	fmt.Printf("%x", shasum)
 }
