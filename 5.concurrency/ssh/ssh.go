@@ -15,17 +15,9 @@ func main() {
 		log.Fatalf("SSH failed to %v with Error: %v", intro.Env["node"], err)
 	}
 	// session and client close
-
-	<-out //ignore the shell output
-	in <- "ping -c 1 localhost"
-	fmt.Printf("%s\n", <-out)
-	in <- "date"
-	fmt.Printf("%s\n", <-out)
-	/*
-		in <- "date"
-		fmt.Printf("whoami: %s\n", <-out)
-	*/
+	cmd := "ping -c 1 localhost"
+	fmt.Printf("%s %s", <-out, cmd)
+	in <- cmd
+	fmt.Printf("%s", <-out)
 	in <- "exit"
-	// s.Wait()
-
 }
