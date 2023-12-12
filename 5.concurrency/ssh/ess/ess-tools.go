@@ -46,6 +46,7 @@ func DoSSH(h string, p string) (chan<- string, <-chan string, error) {
 		HostKeyCallback: ssh.FixedHostKey(hostKey),
 	}
 	session, err := createClientSession(config, h, p)
+
 	handleOSSignals(session)
 	if err != nil {
 		return nil, nil, err
@@ -63,6 +64,7 @@ func DoSSH(h string, p string) (chan<- string, <-chan string, error) {
 	if err := session.Start("/bin/bash"); err != nil {
 		return nil, nil, err
 	}
+
 	return in, out, nil
 }
 
@@ -143,25 +145,21 @@ func shell(w io.Writer, r io.Reader) (chan<- string, <-chan string) {
 		}
 	}()
 	go func() {
-		var (
-			buf   [65 * 1024]byte
-			t, co int
-		)
+		var buf [16 * 1024]byte
 		for {
-			n, err := r.Read(buf[t:])
+			n, err := r.Read(buf[:])
 			if err != nil {
-				close(in)
 				close(out)
+				close(in)
 				return
 			}
-			t += n
-			co++
-			if buf[t-2] == '$' || buf[t-2] == '#' {
-				fmt.Println(">>>>>>>>>>>>>", co, ">>>>>>>>", string(buf[:t]))
-				out <- string(buf[:t])
+			if string(buf[n-2:n]) == "\r\n" && n > 12 {
+				out <- string(buf[:n])
+			}
+			if buf[n-2] == '$' || buf[n-2] == '#' {
+				out <- string(buf[:n])
 				wg.Done()
 			}
-			t = 0
 		}
 	}()
 	return in, out

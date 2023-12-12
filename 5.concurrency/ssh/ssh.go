@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	"tuff.local/concurrency/ssh/ess"
@@ -22,20 +21,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error: SSH to %#v failed with %#v", ess.Env["host"], fmt.Sprintf("%s", err))
 	}
-	fmt.Printf("\n\nESS SSH Client connected to %#v started:\n\n", ess.Env["host"])
-	<-out
-	in <- "export IS_IT_ME=YES"
+	fmt.Printf("ESS SSH Client connected to %#v started:\n", ess.Env["host"])
 	reader := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s", <-out)
 	for reader.Scan() {
-		if reader.Text() == "exit" {
-			in <- "echo $IS_IT_ME"
-			if strings.Contains(<-out, "YES") {
-				break
-			}
-		}
 		in <- reader.Text()
-		fmt.Printf("%s", <-out)
+		go func() {
+			for resp := range out {
+				fmt.Printf("%s", resp)
+			}
+		}()
 	}
 	fmt.Printf("ESS SSH session to %#v ended:\n", ess.Env["host"])
 }
