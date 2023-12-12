@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"tuff.local/concurrency/ssh/ess"
 )
 
 func main() {
-	fmt.Println("host", os.Getenv("REMOTE_HOST"))
+	signal.Ignore(syscall.SIGINT)
 	err := ess.Env.Check()
 	if err != nil {
 		log.Fatalf("ERROR:\n%v", err)

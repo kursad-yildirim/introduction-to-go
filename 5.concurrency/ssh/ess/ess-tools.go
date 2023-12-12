@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
 	"strings"
 	"sync"
 
@@ -45,6 +46,7 @@ func DoSSH(h string, p string) (chan<- string, <-chan string, error) {
 		HostKeyCallback: ssh.FixedHostKey(hostKey),
 	}
 	session, err := createClientSession(config, h, p)
+	handleOSSignals(session)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -142,8 +144,8 @@ func shell(w io.Writer, r io.Reader) (chan<- string, <-chan string) {
 	}()
 	go func() {
 		var (
-			buf [65 * 1024]byte
-			t   int
+			buf   [65 * 1024]byte
+			t, co int
 		)
 		for {
 			n, err := r.Read(buf[t:])
@@ -153,13 +155,32 @@ func shell(w io.Writer, r io.Reader) (chan<- string, <-chan string) {
 				return
 			}
 			t += n
+			co++
 			if buf[t-2] == '$' || buf[t-2] == '#' {
+				fmt.Println(">>>>>>>>>>>>>", co, ">>>>>>>>", string(buf[:t]))
 				out <- string(buf[:t])
-				t = 0
 				wg.Done()
 			}
+			t = 0
 		}
 	}()
 	return in, out
 
+}
+
+func handleOSSignals(s *ssh.Session) chan os.Signal {
+	sc := make(chan os.Signal, 1)
+	go func() {
+		for {
+			signal.Notify(sc, os.Interrupt)
+		}
+	}()
+	go func() {
+		for sig := range sc {
+			if fmt.Sprintf("%v", sig) == "2" {
+				s.Signal(ssh.SIGINT)
+			}
+		}
+	}()
+	return sc
 }
