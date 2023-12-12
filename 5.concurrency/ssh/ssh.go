@@ -14,9 +14,18 @@ func main() {
 	}
 	in, out, err := ess.DoSSH(ess.Env["host"], ess.Env["port"])
 	if err != nil {
-		log.Fatalf("Error: SSH to %v failed with %#v", ess.Env["host"], fmt.Sprintf("%s", err))
+		log.Fatalf("Error: SSH to %#v failed with %#v", ess.Env["host"], fmt.Sprintf("%s", err))
 	}
-
+	fmt.Println("hello 0")
+	fmt.Printf("%s", <-out)
+	fmt.Printf("%s", <-out)
 	in <- "ping -c 1 localhost"
 	fmt.Printf("%s", <-out)
+	in <- "exit"
+	/*
+		cmd := "ping -c 1 localhost"
+		fmt.Printf("%s %s", <-out, cmd)
+		in <- cmd
+		fmt.Printf("%s", <-out)
+		in <- "exit"*/
 }
