@@ -4,20 +4,19 @@ import (
 	"fmt"
 	"log"
 
-	"tuff.local/concurrency/ssh/intro"
+	"tuff.local/concurrency/ssh/ess"
 )
 
 func main() {
-	intro.Env.Check()
-
-	in, out, err := intro.DoSSH(intro.Env["node"], intro.Env["ssh_port"])
+	err := ess.Env.Check()
 	if err != nil {
-		log.Fatalf("SSH failed to %v with Error: %v", intro.Env["node"], err)
+		log.Fatalf("ERROR:\n%v", err)
 	}
-	// session and client close
-	cmd := "ping -c 1 localhost"
-	fmt.Printf("%s %s", <-out, cmd)
-	in <- cmd
+	in, out, err := ess.DoSSH(ess.Env["host"], ess.Env["port"])
+	if err != nil {
+		log.Fatalf("Error: SSH to %v failed with %#v", ess.Env["host"], fmt.Sprintf("%s", err))
+	}
+
+	in <- "ping -c 1 localhost"
 	fmt.Printf("%s", <-out)
-	in <- "exit"
 }
