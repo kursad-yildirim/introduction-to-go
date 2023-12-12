@@ -18,14 +18,7 @@ func main() {
 	}
 	fmt.Println("hello 0")
 	fmt.Printf("%s", <-out)
-	fmt.Printf("%s", <-out)
 	in <- "ping -c 1 localhost"
 	fmt.Printf("%s", <-out)
 	in <- "exit"
-	/*
-		cmd := "ping -c 1 localhost"
-		fmt.Printf("%s %s", <-out, cmd)
-		in <- cmd
-		fmt.Printf("%s", <-out)
-		in <- "exit"*/
 }
