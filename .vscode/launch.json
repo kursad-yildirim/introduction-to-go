@@ -5,6 +5,7 @@
         "name": "ssh",
         "type": "go",
         "request": "launch",
+        "console": "integratedTerminal",
         "mode": "auto",
         "program": "${workspaceFolder}/5.concurrency/ssh",
         "envFile": "${workspaceFolder}/5.concurrency/ssh/ssh.env",

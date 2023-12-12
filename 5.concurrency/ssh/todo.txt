@@ -1,0 +1,5 @@
+- Exiting a child session exits from the main session
+- client cannot capture flowing output because currently it waits for the prompt to return
+- CTRL-C closing the session
+- stderr not being processed
+- empty line after prompt
