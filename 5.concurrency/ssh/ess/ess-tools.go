@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/signal"
 	"strings"
 	"sync"
 
@@ -47,7 +46,7 @@ func DoSSH(h string, p string) (chan<- string, <-chan string, error) {
 	}
 	session, err := createClientSession(config, h, p)
 
-	handleOSSignals(session)
+	//handleOSSignals(session)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -166,6 +165,7 @@ func shell(w io.Writer, r io.Reader) (chan<- string, <-chan string) {
 
 }
 
+/*
 func handleOSSignals(s *ssh.Session) chan os.Signal {
 	sc := make(chan os.Signal, 1)
 	go func() {
@@ -182,3 +182,4 @@ func handleOSSignals(s *ssh.Session) chan os.Signal {
 	}()
 	return sc
 }
+*/

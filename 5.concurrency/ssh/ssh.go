@@ -25,6 +25,9 @@ func main() {
 	reader := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s", <-out)
 	for reader.Scan() {
+		if reader.Text() == "exit" {
+			break
+		}
 		in <- reader.Text()
 		go func() {
 			for resp := range out {
@@ -32,5 +35,6 @@ func main() {
 			}
 		}()
 	}
+	in <- reader.Text()
 	fmt.Printf("ESS SSH session to %#v ended:\n", ess.Env["host"])
 }
