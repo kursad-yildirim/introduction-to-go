@@ -1,3 +1,3 @@
-module tuff.local/hw
+module 1.hw
 
-go 1.21
+go 1.21.3

@@ -1,3 +1,3 @@
-module tuff.local/basics
+module 2.basics
 
-go 1.21
+go 1.21.3

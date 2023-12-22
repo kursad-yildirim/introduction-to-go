@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"tuff.local/concurrency/ssh/ess"
+	"5.concurrency/ssh/ess"
 )
 
 func main() {

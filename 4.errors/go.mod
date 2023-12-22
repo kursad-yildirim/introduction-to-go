@@ -1,3 +1,3 @@
-module tuff.local/errors
+module 4.errors
 
-go 1.21
+go 1.21.3

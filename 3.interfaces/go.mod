@@ -1,3 +1,3 @@
-module tuff.local/interfaces
+module 3.interfaces
 
-go 1.21
+go 1.21.3
